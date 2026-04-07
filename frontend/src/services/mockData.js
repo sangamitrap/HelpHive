@@ -1,7 +1,7 @@
 // Mock data for nearby users
 export const mockNearbyUsers = [
   {
-    id: '1',
+    id: 'user-1',
     name: 'Sarah Johnson',
     status: 'need-help',
     distance: 0.5,
@@ -10,7 +10,7 @@ export const mockNearbyUsers = [
     description: 'Need help fixing my laptop',
   },
   {
-    id: '2',
+    id: 'user-2',
     name: 'Mike Chen',
     status: 'helping',
     distance: 1.2,
@@ -19,7 +19,7 @@ export const mockNearbyUsers = [
     description: 'Available for plumbing help',
   },
   {
-    id: '3',
+    id: 'user-3',
     name: 'Emma Davis',
     status: 'need-help',
     distance: 0.8,
@@ -28,7 +28,7 @@ export const mockNearbyUsers = [
     description: 'Looking for gardening assistance',
   },
   {
-    id: '4',
+    id: 'user-4',
     name: 'Alex Kumar',
     status: 'helping',
     distance: 2.1,
@@ -37,7 +37,7 @@ export const mockNearbyUsers = [
     description: 'Offering math tutoring',
   },
   {
-    id: '5',
+    id: 'user-5',
     name: 'Lisa Martinez',
     status: 'need-help',
     distance: 1.5,
@@ -46,7 +46,7 @@ export const mockNearbyUsers = [
     description: 'Need help with moving boxes',
   },
   {
-    id: '6',
+    id: 'user-6',
     name: 'James Wilson',
     status: 'helping',
     distance: 0.3,
@@ -88,29 +88,33 @@ export const mockChatMessages = [
 export const mockAuthService = {
   signup: async (data) => {
     console.log('Mock signup:', data);
+    const userId = `user-${Date.now()}`;
+    const user = {
+      id: userId,
+      fullName: data.fullName,
+      email: data.email,
+      phone: data.phone,
+      address: data.address,
+    };
     return {
       success: true,
-      user: {
-        id: 'user-' + Date.now(),
-        fullName: data.fullName,
-        email: data.email,
-        phone: data.phone,
-        address: data.address,
-      },
+      user,
     };
   },
 
   login: async (email, password) => {
     console.log('Mock login:', email);
+    const userId = `user-${Date.now()}`;
+    const user = {
+      id: userId,
+      fullName: 'John Doe',
+      email: email,
+      phone: '+1234567890',
+      address: '123 Main St, City, Country',
+    };
     return {
       success: true,
-      user: {
-        id: 'user-123',
-        fullName: 'John Doe',
-        email: email,
-        phone: '+1234567890',
-        address: '123 Main St, City, Country',
-      },
+      user,
     };
   },
 };

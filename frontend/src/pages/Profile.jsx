@@ -5,7 +5,7 @@ import { Mail, Phone, MapPin, Edit2, Check, X } from 'lucide-react';
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { user, status } = useStore();
+  const { user, updateProfile, status } = useStore();
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({
     fullName: user?.fullName || '',
@@ -27,9 +27,21 @@ export default function Profile() {
     }));
   };
 
-  const handleSave = () => {
-    // In a real app, this would call an API
-    console.log('Profile updated:', editData);
+  const handleSave = async () => {
+    const result = await updateProfile(editData);
+    if (result.success) {
+      setIsEditing(false);
+    }
+  };
+
+  const handleCancel = () => {
+    // Reset form data to current user data
+    setEditData({
+      fullName: user.fullName,
+      email: user.email,
+      phone: user.phone,
+      address: user.address,
+    });
     setIsEditing(false);
   };
 
@@ -82,7 +94,13 @@ export default function Profile() {
               </div>
             </div>
             <button
-              onClick={() => setIsEditing(!isEditing)}
+              onClick={() => {
+                if (isEditing) {
+                  handleCancel();
+                } else {
+                  setIsEditing(true);
+                }
+              }}
               className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
               <Edit2 className="w-4 h-4" />
@@ -181,15 +199,7 @@ export default function Profile() {
                     Save Changes
                   </button>
                   <button
-                    onClick={() => {
-                      setIsEditing(false);
-                      setEditData({
-                        fullName: user.fullName,
-                        email: user.email,
-                        phone: user.phone,
-                        address: user.address,
-                      });
-                    }}
+                    onClick={handleCancel}
                     className="flex-1 flex items-center justify-center gap-2 btn-secondary"
                   >
                     <X className="w-4 h-4" />

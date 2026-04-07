@@ -4,11 +4,10 @@ import { useStore } from '../store/useStore';
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const { user, status, setStatus, setUser } = useStore();
+  const { user, status, clearAll } = useStore();
 
   const handleLogout = () => {
-    setUser(null);
-    setStatus('off');
+    clearAll();
     navigate('/');
   };
 

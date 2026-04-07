@@ -1,15 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
-import { mockAuthService } from '../services/mockData';
 import { AlertCircle } from 'lucide-react';
 
 export default function Auth() {
   const navigate = useNavigate();
-  const setUser = useStore((state) => state.setUser);
-  
+  const { login, register, isLoading } = useStore();
   const [isLogin, setIsLogin] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     email: '',
@@ -62,32 +59,44 @@ export default function Auth() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    setError('');
+
     if (!validateForm()) {
       return;
     }
 
-    setIsLoading(true);
-    
     try {
-      let response;
+      let result;
       if (isLogin) {
-        response = await mockAuthService.login(formData.email, formData.password);
+        console.log('Attempting login with:', { email: formData.email });
+        result = await login({
+          email: formData.email,
+          password: formData.password
+        });
       } else {
-        response = await mockAuthService.signup(formData);
+        console.log('Attempting register with:', { email: formData.email, fullName: formData.fullName });
+        result = await register({
+          fullName: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+          password: formData.password
+        });
       }
 
-      if (response.success) {
-        setUser(response.user);
+      console.log('Auth result:', result);
+
+      if (result.success) {
+        console.log('Auth successful, navigating to dashboard');
         navigate('/dashboard');
       } else {
-        setError('Authentication failed. Please try again.');
+        const errorMsg = result.error || 'Authentication failed. Please try again.';
+        console.error('Auth failed:', errorMsg);
+        setError(errorMsg);
       }
-    } catch (err) {
-      setError('An error occurred. Please try again.');
-      console.error(err);
-    } finally {
-      setIsLoading(false);
+    } catch (error) {
+      console.error('Error during auth:', error);
+      setError('An unexpected error occurred. Please try again.');
     }
   };
 
@@ -115,7 +124,10 @@ export default function Auth() {
           {error && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex gap-2 items-start">
               <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-red-700">{error}</p>
+              <div>
+                <p className="text-sm text-red-700 font-semibold">Error</p>
+                <p className="text-sm text-red-600">{error}</p>
+              </div>
             </div>
           )}
 

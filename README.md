@@ -57,55 +57,144 @@ A modern, responsive React + Vite + Tailwind CSS web application for connecting 
 
 ```
 HelpHive/
-├── src/
-│   ├── components/
-│   │   ├── Navbar.jsx
-│   │   ├── StatusToggle.jsx
-│   │   ├── LocationStatus.jsx
-│   │   ├── UserCard.jsx
-│   │   └── Toast.jsx
-│   ├── pages/
-│   │   ├── Auth.jsx
-│   │   ├── Dashboard.jsx
-│   │   ├── Chat.jsx
-│   │   └── Profile.jsx
-│   ├── store/
-│   │   └── useStore.js (Zustand store)
-│   ├── services/
-│   │   └── mockData.js
-│   ├── App.jsx
-│   ├── main.jsx
-│   └── index.css
-├── index.html
-├── vite.config.js
-├── tailwind.config.js
-├── postcss.config.js
-├── package.json
-└── README.md
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── StatusToggle.jsx
+│   │   │   ├── LocationStatus.jsx
+│   │   │   ├── UserCard.jsx
+│   │   │   ├── RequestCard.jsx
+│   │   │   ├── HelpRequestForm.jsx
+│   │   │   └── Toast.jsx
+│   │   ├── pages/
+│   │   │   ├── Auth.jsx
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── Chat.jsx
+│   │   │   └── Profile.jsx
+│   │   ├── store/
+│   │   │   └── useStore.js (Zustand store)
+│   │   ├── services/
+│   │   │   └── api.js
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── index.html
+│   ├── vite.config.js
+│   ├── tailwind.config.js
+│   ├── postcss.config.js
+│   ├── package.json
+│   └── node_modules/
+├── backend/
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Request.js
+│   │   ├── Chat.js
+│   │   └── Message.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── users.js
+│   │   ├── requests.js
+│   │   └── chats.js
+│   ├── middleware/
+│   │   └── auth.js
+│   ├── server.js
+│   ├── package.json
+│   └── .env
+├── dist/ (frontend build output)
+├── README.md
+├── setup.md
+└── other documentation files...
 ```
 
 ## Installation
 
-1. **Install dependencies:**
+### Prerequisites
+- Node.js (v16 or higher)
+- MongoDB (local or cloud instance)
+- npm or yarn
+
+### Backend Setup
+
+1. **Navigate to backend directory:**
+   ```bash
+   cd backend
+   ```
+
+2. **Install backend dependencies:**
    ```bash
    npm install
    ```
 
-2. **Start development server:**
+3. **Set up environment variables:**
+   Create a `.env` file in the `backend/` directory:
+   ```env
+   NODE_ENV=development
+   PORT=5000
+   MONGO_URI=mongodb://localhost:27017/helphive
+   JWT_SECRET=your_jwt_secret_key_here
+   FRONTEND_URL=http://localhost:5174
+   ```
+
+4. **Start the backend server:**
+   ```bash
+   npm start
+   ```
+   The backend will run on `http://localhost:5000`
+
+### Frontend Setup
+
+1. **Navigate to frontend directory:**
+   ```bash
+   cd frontend
+   ```
+
+2. **Install frontend dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start the frontend development server:**
+   ```bash
+   npm run dev
+   ```
+   The frontend will run on `http://localhost:5173`
+
+### Quick Start (Recommended)
+
+1. **Install all dependencies:**
+   ```bash
+   npm run install:all
+   ```
+
+2. **Start both frontend and backend:**
    ```bash
    npm run dev
    ```
 
-3. **Open in browser:**
-   - Navigate to `http://localhost:5173`
+This will start both the backend server (http://localhost:5000) and frontend dev server (http://localhost:5173) simultaneously.
+
+### Manual Setup
+
+If you prefer to run services separately, follow the Backend Setup and Frontend Setup sections above.
 
 ## Building for Production
 
+### Frontend Build
 ```bash
+cd frontend
 npm run build
 ```
 
-This creates an optimized production build in the `dist/` directory.
+This creates an optimized production build in the `frontend/dist/` directory.
+
+### Backend Production
+```bash
+cd backend
+npm start
+```
+
+For production deployment, you'll need to serve the frontend build files from the backend or a web server.
 
 ## Testing the App
 
